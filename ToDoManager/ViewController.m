@@ -30,10 +30,13 @@
     [self.todoListTableView reloadData];
 }
 
-- (IBAction)EditTodoList:(id)sender {
+- (IBAction)editTodoEvent:(id)sender {
     if(!self.todoListTableView.editing){
         [self.editButton setTitle:@"Done" forState:UIControlStateNormal];
         [self.editButton setTitle:@"Done" forState:UIControlStateNormal];
+        _todoTextField.text = nil;
+        [_todoTextField resignFirstResponder];
+        _editing = NO;
 
         [self.todoListTableView setEditing:YES animated:YES];
     } else {
@@ -75,8 +78,9 @@
 }
 
 - (float)heightOfCellWithEntity:(ToDo *)todo{
-    CGSize maximumLabelSize = CGSizeMake(self.view.frame.size.width - 15, FLT_MAX);
-    CGSize contentLabelSize = [todo.des sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByCharWrapping];
+     UIFont *fontText = [UIFont systemFontOfSize:17];
+    CGSize maximumLabelSize = CGSizeMake(self.view.frame.size.width - 10, FLT_MAX);
+    CGSize contentLabelSize = [todo.des boundingRectWithSize:maximumLabelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:fontText} context:NSLineBreakByWordWrapping].size;
     return contentLabelSize.height + 10;
 }
 
@@ -124,14 +128,12 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(editingStyle == UITableViewCellEditingStyleDelete){
-        
         ToDo *todoEntity = [_todoLists objectAtIndex:indexPath.row];
         [self deleteEvent:todoEntity];
         [_todoLists removeObjectAtIndex:indexPath.row];
         [self.todoListTableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
-
 
 # pragma mark - text field delegate 
 

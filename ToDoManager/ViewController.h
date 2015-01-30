@@ -21,7 +21,7 @@
 @property (assign, nonatomic) BOOL editing;
 @property (assign, nonatomic) int indexEditing;
 @property (strong, nonatomic) OverlayView *overlayView;
-- (IBAction)EditTodoList:(id)sender;
+- (IBAction)editTodoEvent:(id)sender;
 
 @end
 

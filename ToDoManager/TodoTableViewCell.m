@@ -23,11 +23,10 @@
 - (void)setTodoEntity:(ToDo *)todoEntity{
     CGSize maximumLabelSize = CGSizeMake(_contentLabel.frame.size.width, FLT_MAX);
     _contentLabel.text = todoEntity.des;
-    CGSize contentLabelSize = [_contentLabel.text sizeWithFont:_contentLabel.font constrainedToSize:maximumLabelSize lineBreakMode:_contentLabel.lineBreakMode];
+        CGSize contentLabelSize = [todoEntity.des boundingRectWithSize:maximumLabelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:_contentLabel.font} context:NSLineBreakByWordWrapping].size;
     CGRect newRect = _contentLabel.frame;
     newRect.size.height	= contentLabelSize.height;
     _contentLabel.frame = newRect;
-    
 }
 
 @end
