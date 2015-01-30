@@ -10,12 +10,11 @@
 
 
 // Data base
-#define kToDoTableName          @"ToDo"
+#define kToDoTableName          @"ToDoManager"
 #define kToDoID                 @"kToDoIdentifier"
 #define kToDoDate               @"kToDoDate"
 #define kToDoDes                @"kToDoDes"
 #define kToDoTile               @"kToDoTile"
-
 
 @interface Global : NSObject
 

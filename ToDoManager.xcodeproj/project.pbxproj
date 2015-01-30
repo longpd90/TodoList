@@ -20,6 +20,8 @@
 		B6386CEC1A7A1A7B0079AD64 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6386CEA1A7A1A7B0079AD64 /* LaunchScreen.xib */; };
 		B6386CF81A7A1A7B0079AD64 /* ToDoManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B6386CF71A7A1A7B0079AD64 /* ToDoManagerTests.m */; };
 		B68482841A7A349A009BD2DB /* ToDo.m in Sources */ = {isa = PBXBuildFile; fileRef = B68482831A7A349A009BD2DB /* ToDo.m */; };
+		B6B0C5BC1A7B3A6000C52EB7 /* imgo.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = B6B0C5BB1A7B3A6000C52EB7 /* imgo.jpeg */; };
+		B6B0C5BF1A7B4FAD00C52EB7 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B0C5BE1A7B4FAD00C52EB7 /* OverlayView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,9 @@
 		B6386CF71A7A1A7B0079AD64 /* ToDoManagerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToDoManagerTests.m; sourceTree = "<group>"; };
 		B68482821A7A349A009BD2DB /* ToDo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToDo.h; sourceTree = "<group>"; };
 		B68482831A7A349A009BD2DB /* ToDo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToDo.m; sourceTree = "<group>"; };
+		B6B0C5BB1A7B3A6000C52EB7 /* imgo.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = imgo.jpeg; sourceTree = "<group>"; };
+		B6B0C5BD1A7B4FAD00C52EB7 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
+		B6B0C5BE1A7B4FAD00C52EB7 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +121,7 @@
 		B62C030F1A7A3AC90035ED3E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B6B0C5BB1A7B3A6000C52EB7 /* imgo.jpeg */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -123,6 +129,8 @@
 		B62C03101A7A3AE40035ED3E /* Items View */ = {
 			isa = PBXGroup;
 			children = (
+				B6B0C5BD1A7B4FAD00C52EB7 /* OverlayView.h */,
+				B6B0C5BE1A7B4FAD00C52EB7 /* OverlayView.m */,
 				B62C03111A7A3FA80035ED3E /* TodoTableViewCell.h */,
 				B62C03121A7A3FA80035ED3E /* TodoTableViewCell.m */,
 				B62C03131A7A3FA80035ED3E /* TodoTableViewCell.xib */,
@@ -273,6 +281,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6B0C5BC1A7B3A6000C52EB7 /* imgo.jpeg in Resources */,
 				B6386CE71A7A1A7B0079AD64 /* Main.storyboard in Resources */,
 				B6386CEC1A7A1A7B0079AD64 /* LaunchScreen.xib in Resources */,
 				B6386CE91A7A1A7B0079AD64 /* Images.xcassets in Resources */,
@@ -295,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B62C030C1A7A389C0035ED3E /* Global.m in Sources */,
+				B6B0C5BF1A7B4FAD00C52EB7 /* OverlayView.m in Sources */,
 				B6386CDE1A7A1A7B0079AD64 /* AppDelegate.m in Sources */,
 				B6386CDB1A7A1A7B0079AD64 /* main.m in Sources */,
 				B68482841A7A349A009BD2DB /* ToDo.m in Sources */,

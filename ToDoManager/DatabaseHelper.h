@@ -18,5 +18,6 @@
 - (BOOL)insertObjectToDataBase:(NSString *)tableName withDictionnary:(NSDictionary *)dictionnary;
 - (BOOL)updateObjectToDatabase:(ToDo *)todoEntity withDictionnary:(NSDictionary *)dictionnary;
 - (BOOL)saveCoreDataInContext:(NSManagedObjectContext *)context;
+- (BOOL)deleteTodo:(ToDo *)todoEntity;
 
 @end

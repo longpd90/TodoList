@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ToDo.h"
 
 @interface TodoTableViewCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
+@property (strong, nonatomic) ToDo *todoEntity;
 @end

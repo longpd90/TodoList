@@ -17,5 +17,4 @@
 @property (nonatomic, retain) NSString * des;
 @property (nonatomic, retain) NSString * title;
 
-
 @end

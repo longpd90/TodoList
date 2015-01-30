@@ -50,6 +50,16 @@ static DatabaseHelper *shareInstance;
     return context;
 }
 
+- (NSManagedObjectContext * )deleteObjectContext:(ToDo *)todoEntity {
+    NSManagedObjectContext *context = nil;
+    id delegate = [[UIApplication sharedApplication] delegate];
+    context = [delegate managedObjectContext];
+    if ([delegate performSelector:@selector(managedObjectContext)]) {
+         [context deleteObject:todoEntity];
+    }
+    return context;
+}
+
 #pragma mark - update object
 
 - (BOOL)insertObjectToDataBase:(NSString *)tableName withDictionnary:(NSDictionary *)dictionnary
@@ -69,13 +79,17 @@ static DatabaseHelper *shareInstance;
     return [self saveCoreDataInContext:[self managedObjectContext]];
 }
 
+- (BOOL)deleteTodo:(ToDo *)todoEntity
+{
+    return [self saveCoreDataInContext:[self deleteObjectContext:todoEntity]];
+}
 #pragma mark - get objects
 
 
 // get all objects
 - (NSMutableArray *)getAllRecordObjectsFromDatabase:(NSString *)tableName
 {
-	return [self getRecordObjectsFromDatabase:tableName withRow:nil andKey:nil andSortAscending:NO];
+	return [self getRecordObjectsFromDatabase:tableName withRow:nil andKey:nil andSortAscending:YES];
 }
 
 // get objects with a predicate

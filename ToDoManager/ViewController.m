@@ -17,68 +17,53 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _todoTextField.placeholder = @"+ add a new event";
+    [_todoTextField setReturnKeyType:UIReturnKeyDone];
+    _editButton.layer.cornerRadius = 4;
+    [self resetContentTodoList];
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
+# pragma mark - action
 
 - (void)resetContentTodoList
 {
-    NSArray *allRecords = [[DatabaseHelper shareMyInstance] getAllRecordObjectsFromDatabase:kToDoTableName];
+    _todoLists = [[DatabaseHelper shareMyInstance] getAllRecordObjectsFromDatabase:kToDoTableName];
     [self.todoListTableView reloadData];
 }
 
-- (void)insertRecord
-{
+- (IBAction)EditTodoList:(id)sender {
+    if(!self.todoListTableView.editing){
+        [self.editButton setTitle:@"Done" forState:UIControlStateNormal];
+        [self.editButton setTitle:@"Done" forState:UIControlStateNormal];
 
-    
-    NSMutableDictionary *dataRecord = [[NSMutableDictionary alloc] init];
-//    [dataRecord setValue:self.dateSelected forKey:kRRRashRecordDate];
-//    [dataRecord setValue:self.rightHandString forKey:kRRRashRecordPtRightHand];
-//    [dataRecord setValue:self.leftHandString forKey:kRRRashRecordPtLeftHand];
-//    [dataRecord setValue:self.rightLegString forKey:kRRRashRecordPtRightLeg];
-//    [dataRecord setValue:self.leftLegString forKey:kRRRashRecordPtLeftLeg];
-//    [dataRecord setValue:self.viewCalendarDetail.txtDiseaseName.text forKey:kRRRashRecordTile];
-//    [dataRecord setValue:[NSString stringWithFormat:@"%d", self.viewCalendarDetail.numAM] forKey:kRRRashRecordNumAmPin];
-//    [dataRecord setValue:[NSString stringWithFormat:@"%d", self.viewCalendarDetail.numPM] forKey:kRRRashRecordNumPmPin];
-//    
-//    [dataRecord setValue:dateExamination forKey:kRRRashRecordHosTime];
-//    [dataRecord setValue:self.viewCalendarDetail.txtExaminationPlace.text forKey:kRRRashRecordHosAddress];
-//    [dataRecord setValue:self.viewCalendarDetail.textViewNote.text forKey:kRRRashRecordDes];
-//    NSMutableArray *result = [[RRDatabaseHelper shareMyInstance] getRecordObjectsFromDate:self.dateSelected.dayBegin toDate:self.dateSelected.dayEnd withTableName:kRRRashRecordTableName];
-//    if ([result count] == 0)
-//    {
-//        [[RRDatabaseHelper shareMyInstance] insertObjectToDataBase:kRRRashRecordTableName withDictionnary:dataRecord];
-//    }
-//    else
-//    {
-//        ToDo *updateTodo = [result objectAtIndex:0];
-//        updateTodo.des = self.viewCalendarDetail.textViewNote.text;
-//        updateTodo.title = self.viewCalendarDetail.txtDiseaseName.text;
-//        [[updateTodo shareMyInstance] updateObjectToDatabase:updateRashRecord withDictionnary:dataRecord];
-//    }
-    /*
-     if (touchedView != nil)
-     {
-     [touchedView drawRect:CGRectMake(touchedView.frame.origin.x, touchedView.frame.origin.y, touchedView.frame.size.width, touchedView.frame.size.height)];
-     }
-     else
-     {*/
-//    RRCalendarMonthView *monthView = [activeMonthViews objectAtIndex:2];
-//    NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekdayCalendarUnit fromDate:self.dateSelected];
-//    
-//    for (RRCalendarDayView *dayView in monthView.dayViews)
-//    {
-//        if (dayView.day.day == dateComponents.day && dayView.day.month == dateComponents.month && dayView.day.year == dateComponents.year)
-//        {
-//            [dayView drawRect:CGRectMake(dayView.frame.origin.x, dayView.frame.origin.y, dayView.frame.size.width, dayView.frame.size.height)];
-//        }
-//    }
-    //}
-    
+        [self.todoListTableView setEditing:YES animated:YES];
+    } else {
+        [self.editButton setTitle:@"Delete" forState:UIControlStateNormal];
+        [self.editButton setTitle:@"Delete" forState:UIControlStateSelected];
+
+        [self.todoListTableView setEditing:NO animated:YES];
+    }
 }
 
+#pragma mark - update data
+
+- (void)addEvent
+{
+    NSMutableDictionary *dataTodo = [[NSMutableDictionary alloc] init];
+    [dataTodo setValue:_todoTextField.text forKey:kToDoDes];
+    [[DatabaseHelper shareMyInstance] insertObjectToDataBase:kToDoTableName withDictionnary:dataTodo];
+}
+
+- (void)editEvent:(ToDo *)todoEntity{
+    NSMutableDictionary *dataTodo= [[NSMutableDictionary alloc] init];
+    [dataTodo setValue:self.todoTextField.text forKey:kToDoDes];
+    [[DatabaseHelper shareMyInstance] updateObjectToDatabase:todoEntity withDictionnary:dataTodo];
+
+}
+- (void)deleteEvent:(ToDo *)todoEntity{
+    [[DatabaseHelper shareMyInstance] deleteTodo:todoEntity];
+}
+
+#pragma mark - private
 
 - (id)loadFromNibNamed:(NSString *)nibName
 {
@@ -87,6 +72,12 @@
     }
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
     return [nib objectAtIndex:0];
+}
+
+- (float)heightOfCellWithEntity:(ToDo *)todo{
+    CGSize maximumLabelSize = CGSizeMake(self.view.frame.size.width - 15, FLT_MAX);
+    CGSize contentLabelSize = [todo.des sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByCharWrapping];
+    return contentLabelSize.height + 10;
 }
 
 #pragma mark - table view
@@ -101,26 +92,83 @@
     return _todoLists.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self heightOfCellWithEntity:(ToDo *)[_todoLists objectAtIndex:indexPath.row]];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *todoCellIdentifier = @"TodoTableViewCell";
         TodoTableViewCell *todoCell = (TodoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:todoCellIdentifier];
-        if (todoCell == nil) {
+        if (!todoCell) {
             todoCell = [self loadFromNibNamed:todoCellIdentifier];
         }
-//        expandRcordCell.rashRecord = [_todoLists objectAtIndex:indexPath.row - 1];
+        todoCell.todoEntity = [_todoLists objectAtIndex:indexPath.row];
         return todoCell;
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return indexPath.row == _currentExpandedCell ? EXPANDED_CELL_HEIGHT : [self collapsedCellHeight];
-//}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    ToDo *todoEntity = [_todoLists objectAtIndex:indexPath.row];
+    _indexEditing = (int) indexPath.row;
+    _todoTextField.text = todoEntity.des;
+    _editing = YES;
+    [_todoTextField becomeFirstResponder];
+}
+
+- (void)tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath{
     
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(editingStyle == UITableViewCellEditingStyleDelete){
+        
+        ToDo *todoEntity = [_todoLists objectAtIndex:indexPath.row];
+        [self deleteEvent:todoEntity];
+        [_todoLists removeObjectAtIndex:indexPath.row];
+        [self.todoListTableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
 
+
+# pragma mark - text field delegate 
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if (_todoTextField.text.length == 0) {
+        [_todoTextField resignFirstResponder];
+        return YES;
+    }
+    if (_editing) {
+        [self editEvent:[_todoLists objectAtIndex:_indexEditing]];
+    }else {
+        [self addEvent];
+    }
+    [self resetContentTodoList];
+    self.overlayView.hidden = YES;
+    _editing = NO;
+    _todoTextField.text = nil;
+    [_todoTextField resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (!self.overlayView) {
+        self.overlayView = [[OverlayView alloc] initWithFrame:CGRectMake(0, self.todoListTableView.frame.origin.y + 40,self.view.frame.size.width, self.todoListTableView.frame.size.height)];
+        self.overlayView.backgroundColor = [UIColor clearColor];
+        self.overlayView.delegate = self;
+        [self.view addSubview:self.overlayView];
+    }
+    self.overlayView.hidden = NO;
+    return YES;
+}
+
+# pragma mark - overlay view delegate
+
+- (void)didTouchesToOverlayView
+{
+    [_todoTextField resignFirstResponder];
+    self.overlayView.hidden = YES;
+}
 @end
